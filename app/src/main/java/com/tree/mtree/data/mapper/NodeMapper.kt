@@ -24,7 +24,7 @@ class NodeMapper {
         }.toMutableList()
     }
 
-    private fun mapNodesDbModelToModel(nodesDbModel: MutableList<NodeDbModel>): MutableList<Node> {
+    fun mapNodesDbModelToModel(nodesDbModel: MutableList<NodeDbModel>): MutableList<Node> {
         return nodesDbModel.map {
             mapDbModelToModel(it)
         }.toMutableList()

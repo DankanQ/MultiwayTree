@@ -5,7 +5,7 @@ import com.tree.mtree.domain.model.Node
 interface NodeRepository {
     suspend fun addNode(node: Node)
 
-    suspend fun deleteNode(node: Node)
+    suspend fun deleteNode(parentId: Int, id: Int)
 
     suspend fun getNode(parentId: Int, id: Int): Node
 
