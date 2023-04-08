@@ -1,7 +1,8 @@
-package com.tree.mtree
+package com.tree.mtree.presentation.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.tree.mtree.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
