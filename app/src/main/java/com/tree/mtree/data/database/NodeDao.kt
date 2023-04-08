@@ -12,11 +12,11 @@ interface NodeDao {
     suspend fun addNode(nodeDbModel: NodeDbModel)
 
     @Query("DELETE FROM nodes WHERE parentId=:nodeDbModel.parentId AND id=:nodeDbModel.id")
-    suspend fun deleteNode(nodeDbModel: NodeDbModel)
+    suspend fun deleteNode(parentId: Int, id: Int)
 
     @Query("SELECT * FROM nodes WHERE parentId=:parentId AND id=:id LIMIT 1")
     suspend fun getNode(parentId: Int, id: Int): NodeDbModel
 
     @Query("SELECT * FROM nodes WHERE parentId=:parentId")
-    suspend fun getNodes(parentId: Int): List<NodeDbModel>
+    suspend fun getNodes(parentId: Int): MutableList<NodeDbModel>
 }
