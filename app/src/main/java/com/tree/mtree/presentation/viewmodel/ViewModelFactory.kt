@@ -1,4 +1,4 @@
-package com.tree.mtree.presentation
+package com.tree.mtree.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
