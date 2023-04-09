@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class NodeDbModel(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
-    val name: String,
+    var name: String,
     val children: MutableList<NodeDbModel>,
     val parentId: Int
 )

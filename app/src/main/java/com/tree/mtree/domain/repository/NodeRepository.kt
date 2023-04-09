@@ -7,7 +7,7 @@ interface NodeRepository {
 
     suspend fun deleteNode(parentId: Int, id: Int)
 
-    suspend fun getNode(parentId: Int, id: Int): Node
+    suspend fun getNode(id: Int): Node
 
     suspend fun getNodes(parentId: Int): List<Node>
 }

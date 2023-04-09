@@ -22,7 +22,7 @@ class NodeAdapter : ListAdapter<Node, NodeViewHolder>(NodeDiffCallback) {
     override fun onBindViewHolder(holder: NodeViewHolder, position: Int) {
         val node = getItem(position)
         with(holder.binding) {
-            tvName.text = node.id.toString()
+            tvName.text = node.name
             root.setOnClickListener { onNodeClick?.invoke(node) }
         }
     }

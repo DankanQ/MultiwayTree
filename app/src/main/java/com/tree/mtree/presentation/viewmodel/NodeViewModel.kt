@@ -12,6 +12,7 @@ import com.example.treestructure.domain.usecases.GetNodesUseCase
 import com.tree.mtree.data.repository.NodeRepositoryImpl
 import com.tree.mtree.domain.model.Node
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class NodeViewModel(application: Application) : AndroidViewModel(application) {
@@ -25,22 +26,27 @@ class NodeViewModel(application: Application) : AndroidViewModel(application) {
     private val _nodes = MutableLiveData<List<Node>>()
     var nodes: LiveData<List<Node>> = _nodes
 
+    private val _node = MutableLiveData<Node>()
+    var node: LiveData<Node> = _node
+
     fun addNode(node: Node) {
         viewModelScope.launch(Dispatchers.IO) {
             addNodeUseCase.invoke(node)
+            getNodes(node.parentId)
         }
     }
 
     fun deleteNode(parentId: Int, id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             deleteNodeUseCase.invoke(parentId, id)
+            getNodes(parentId)
         }
     }
 
-    fun getNode(parentId: Int, id: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            getNodeUseCase.invoke(parentId, id)
-        }
+    suspend fun getNode(id: Int): Node {
+        return viewModelScope.async(Dispatchers.IO) {
+            getNodeUseCase.invoke(id)
+        }.await()
     }
 
     fun getNodes(parentId: Int) {
