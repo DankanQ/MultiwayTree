@@ -5,9 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.tree.mtree.data.database.converter.TypeConverter
 import com.tree.mtree.data.database.model.NodeDbModel
 
-@Database(entities = [NodeDbModel::class], version = 2, exportSchema = false)
+@Database(entities = [NodeDbModel::class], version = 1, exportSchema = false)
 @TypeConverters(TypeConverter::class)
 abstract class NodeDatabase : RoomDatabase() {
     abstract fun nodeDao(): NodeDao
@@ -29,7 +30,8 @@ abstract class NodeDatabase : RoomDatabase() {
                     application,
                     NodeDatabase::class.java,
                     DB_NAME
-                ).build()
+                ).fallbackToDestructiveMigration()
+                    .build()
                 INSTANCE = db
                 return db
             }

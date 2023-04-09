@@ -11,24 +11,36 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tree.mtree.R
 import com.tree.mtree.databinding.FragmentNodeBinding
 import com.tree.mtree.domain.model.Node
+import com.tree.mtree.presentation.MTreeApp
+import com.tree.mtree.presentation.ViewModelFactory
 import com.tree.mtree.presentation.adapter.NodeAdapter
 import com.tree.mtree.presentation.viewmodel.NodeViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class NodeFragment : Fragment(R.layout.fragment_node) {
     private lateinit var binding: FragmentNodeBinding
 
-    private lateinit var onFragmentDestroyedListener: OnFragmentDestroyedListener
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
 
     private val nodeViewModel by lazy {
-        ViewModelProvider(this)[NodeViewModel::class.java]
+        ViewModelProvider(this, viewModelFactory)[NodeViewModel::class.java]
     }
+
+    private val component by lazy {
+        (requireActivity().application as MTreeApp).component
+    }
+
+    private lateinit var onFragmentDestroyedListener: OnFragmentDestroyedListener
 
     private val nodeAdapter = NodeAdapter()
 
     private var nodeId = UNDEFINED_NODE_ID
 
     override fun onAttach(context: Context) {
+        component.inject(this)
+
         super.onAttach(context)
         if (context is OnFragmentDestroyedListener) {
             onFragmentDestroyedListener = context

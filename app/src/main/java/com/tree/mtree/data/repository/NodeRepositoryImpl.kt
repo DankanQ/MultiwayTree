@@ -1,16 +1,16 @@
 package com.tree.mtree.data.repository
 
-import android.app.Application
-import com.tree.mtree.data.database.NodeDatabase
+import com.tree.mtree.data.database.NodeDao
 import com.tree.mtree.data.mapper.NodeMapper
 import com.tree.mtree.domain.model.Node
 import com.tree.mtree.domain.repository.NodeRepository
 import java.security.MessageDigest
+import javax.inject.Inject
 
-class NodeRepositoryImpl(application: Application) : NodeRepository {
-    private val nodeDao = NodeDatabase.getInstance(application).nodeDao()
-    private val nodeMapper = NodeMapper()
-
+class NodeRepositoryImpl @Inject constructor(
+    private val nodeDao: NodeDao,
+    private val nodeMapper: NodeMapper
+) : NodeRepository {
     private suspend fun updateNodeName(id: Int) {
         val node = getNode(id)
 
