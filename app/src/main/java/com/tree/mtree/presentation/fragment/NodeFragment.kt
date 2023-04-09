@@ -1,7 +1,7 @@
 package com.tree.mtree.presentation.fragment
 
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -18,6 +18,8 @@ import kotlinx.coroutines.launch
 class NodeFragment : Fragment(R.layout.fragment_node) {
     private lateinit var binding: FragmentNodeBinding
 
+    private lateinit var onFragmentDestroyedListener: OnFragmentDestroyedListener
+
     private val nodeViewModel by lazy {
         ViewModelProvider(this)[NodeViewModel::class.java]
     }
@@ -25,6 +27,15 @@ class NodeFragment : Fragment(R.layout.fragment_node) {
     private val nodeAdapter = NodeAdapter()
 
     private var nodeId = UNDEFINED_NODE_ID
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnFragmentDestroyedListener) {
+            onFragmentDestroyedListener = context
+        } else {
+            throw RuntimeException("Activity must implement OnDestroyedListener")
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,10 +56,14 @@ class NodeFragment : Fragment(R.layout.fragment_node) {
         else binding.fabBack.visibility = View.VISIBLE
     }
 
+    override fun onPause() {
+        super.onPause()
+        onFragmentDestroyedListener.onFragmentDestroyed(nodeId)
+    }
+
     private fun observeViewModel() {
         nodeViewModel.nodes.observe(viewLifecycleOwner) {
             nodeAdapter.submitList(it)
-            Log.d("Nodes", it.toString())
         }
     }
 
@@ -104,6 +119,10 @@ class NodeFragment : Fragment(R.layout.fragment_node) {
                 )
             )
         }
+    }
+
+    interface OnFragmentDestroyedListener {
+        fun onFragmentDestroyed(nodeId: Int)
     }
 
     private fun parseArgs() {
