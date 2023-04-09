@@ -2,8 +2,9 @@ package com.tree.mtree.data.mapper
 
 import com.tree.mtree.data.database.model.NodeDbModel
 import com.tree.mtree.domain.model.Node
+import javax.inject.Inject
 
-class NodeMapper {
+class NodeMapper @Inject constructor() {
     fun mapModelToDbModel(node: Node) = NodeDbModel(
         id = node.id,
         name = node.name,
