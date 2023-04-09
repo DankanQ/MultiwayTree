@@ -2,17 +2,19 @@ package com.tree.mtree.presentation.fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.tree.mtree.R
 import com.tree.mtree.databinding.FragmentNodeBinding
 import com.tree.mtree.domain.model.Node
 import com.tree.mtree.presentation.MTreeApp
-import com.tree.mtree.presentation.ViewModelFactory
+import com.tree.mtree.presentation.viewmodel.ViewModelFactory
 import com.tree.mtree.presentation.adapter.NodeAdapter
 import com.tree.mtree.presentation.viewmodel.NodeViewModel
 import kotlinx.coroutines.launch
@@ -49,14 +51,11 @@ class NodeFragment : Fragment(R.layout.fragment_node) {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        parseArgs()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentNodeBinding.bind(view)
+
+        nodeId = arguments?.getInt(NODE_ID, UNDEFINED_NODE_ID) ?: UNDEFINED_NODE_ID
 
         setupRecyclerView()
         setupButtons()
@@ -70,6 +69,7 @@ class NodeFragment : Fragment(R.layout.fragment_node) {
 
     override fun onPause() {
         super.onPause()
+
         onFragmentDestroyedListener.onFragmentDestroyed(nodeId)
     }
 
@@ -84,10 +84,9 @@ class NodeFragment : Fragment(R.layout.fragment_node) {
 
         nodeAdapter.onNodeClick = {
             val nodeId = it.id
-            val nodeFragment = newInstance(nodeId)
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container_view, nodeFragment)
-                .commit()
+            findNavController().navigate(
+                NodeFragmentDirections.actionNodeFragmentSelf(nodeId)
+            )
         }
 
         // swipe for delete
@@ -116,12 +115,13 @@ class NodeFragment : Fragment(R.layout.fragment_node) {
         binding.fabBack.setOnClickListener {
             lifecycleScope.launch {
                 val node = nodeViewModel.getNode(nodeId)
-                val nodeFragment = newInstance(node.parentId)
-                requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container_view, nodeFragment)
-                    .commit()
+                Log.d("NodeId", "parentId = ${node.parentId} и nodeId = ${node.id}")
+                findNavController().navigate(
+                    NodeFragmentDirections.actionNodeFragmentSelf(node.parentId)
+                )
             }
         }
+
         binding.fabAdd.setOnClickListener {
             nodeViewModel.addNode(
                 Node(
@@ -137,25 +137,8 @@ class NodeFragment : Fragment(R.layout.fragment_node) {
         fun onFragmentDestroyed(nodeId: Int)
     }
 
-    private fun parseArgs() {
-        val args = requireArguments()
-        if (args.containsKey(NODE_ID)) {
-            nodeId = args.getInt(NODE_ID, UNDEFINED_NODE_ID)
-        } else {
-            throw RuntimeException("Args doesn't contain a key")
-        }
-    }
-
     companion object {
-        private const val NODE_ID = "node_id"
+        private const val NODE_ID = "nodeId"
         private const val UNDEFINED_NODE_ID = 0
-
-        fun newInstance(id: Int): NodeFragment {
-            return NodeFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(NODE_ID, id)
-                }
-            }
-        }
     }
 }

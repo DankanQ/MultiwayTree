@@ -3,11 +3,20 @@ package com.tree.mtree.presentation.activity
 import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
 import com.tree.mtree.R
 import com.tree.mtree.presentation.fragment.NodeFragment
+import com.tree.mtree.presentation.fragment.NodeFragmentDirections
 
 class MainActivity : AppCompatActivity(), NodeFragment.OnFragmentDestroyedListener {
     private var nodeId: Int = ROOT_NODE_ID
+
+    private val navController by lazy {
+        val navHostFragment = (supportFragmentManager.findFragmentById(
+            R.id.fragment_container_view
+        ) as NavHostFragment)
+        navHostFragment.navController
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,10 +29,9 @@ class MainActivity : AppCompatActivity(), NodeFragment.OnFragmentDestroyedListen
         val sharedPrefs = getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE)
         nodeId = sharedPrefs.getInt(SHARED_PREFS_KEY, ROOT_NODE_ID)
 
-        val nodeFragment = NodeFragment.newInstance(nodeId)
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container_view, nodeFragment)
-            .commit()
+        navController.navigate(
+            NodeFragmentDirections.actionNodeFragmentSelf(nodeId)
+        )
     }
 
     override fun onPause() {
