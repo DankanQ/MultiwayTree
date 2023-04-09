@@ -1,7 +1,7 @@
 package com.tree.mtree.data.repository
 
 import android.app.Application
-import com.example.treestructure.data.database.NodeDatabase
+import com.tree.mtree.data.database.NodeDatabase
 import com.tree.mtree.data.mapper.NodeMapper
 import com.tree.mtree.domain.model.Node
 import com.tree.mtree.domain.repository.NodeRepository

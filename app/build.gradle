@@ -15,6 +15,7 @@ ext {
     lifecycle = "2.6.1"
     coroutines = "1.6.4"
     room = "2.5.1"
+    gson = "2.9.0"
     dagger = "2.44.2"
 
     // Test dependencies
@@ -79,6 +80,10 @@ dependencies {
     // Room
     implementation "androidx.room:room-runtime:$room"
     implementation "androidx.room:room-ktx:$room"
+    kapt "androidx.room:room-compiler:$room"
+
+    // Gson
+    implementation "com.google.code.gson:gson:$gson"
 
     // Dagger
     implementation "com.google.dagger:dagger:$dagger"

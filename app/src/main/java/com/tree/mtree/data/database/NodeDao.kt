@@ -1,4 +1,4 @@
-package com.example.treestructure.data.database
+package com.tree.mtree.data.database
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -11,7 +11,7 @@ interface NodeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addNode(nodeDbModel: NodeDbModel)
 
-    @Query("DELETE FROM nodes WHERE parentId=:nodeDbModel.parentId AND id=:nodeDbModel.id")
+    @Query("DELETE FROM nodes WHERE parentId=:parentId AND id=:id")
     suspend fun deleteNode(parentId: Int, id: Int)
 
     @Query("SELECT * FROM nodes WHERE parentId=:parentId AND id=:id LIMIT 1")
