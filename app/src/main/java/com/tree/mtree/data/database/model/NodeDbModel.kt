@@ -5,9 +5,9 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "nodes")
 data class NodeDbModel(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     val id: Int,
-    val name: String,
+    var name: String,
     val children: MutableList<NodeDbModel>,
     val parentId: Int
 )
