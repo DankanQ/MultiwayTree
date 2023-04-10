@@ -1,15 +1,11 @@
 package com.tree.mtree.domain.model
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-
-@Parcelize
 data class Node(
     val name: String,
     val children: List<Node>,
     val parentId: Int,
     var nodeId: Int = UNDEFINED_ID
-) : Parcelable {
+) {
     companion object {
         const val UNDEFINED_ID = 0
     }
