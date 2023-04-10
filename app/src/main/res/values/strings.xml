@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">MTree</string>
     <string name="back_button">Back button</string>
+    <string name="empty_list">Empty list</string>
 </resources>

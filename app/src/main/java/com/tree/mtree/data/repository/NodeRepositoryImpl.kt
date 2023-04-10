@@ -4,6 +4,9 @@ import com.tree.mtree.data.database.NodeDao
 import com.tree.mtree.data.mapper.NodeMapper
 import com.tree.mtree.domain.model.Node
 import com.tree.mtree.domain.repository.NodeRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.flow
 import java.security.MessageDigest
 import javax.inject.Inject
 
@@ -45,10 +48,18 @@ class NodeRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getNodes(parentId: Int): List<Node> {
+    private val refreshEvents = MutableSharedFlow<Unit>()
+
+    override fun getNodes(parentId: Int): Flow<List<Node>> = flow {
         val nodesDbModel = nodeDao.getNodes(parentId)
-        return nodeMapper.mapNodesDbModelToModel(
-            nodesDbModel
-        )
+        emit(nodeMapper.mapNodesDbModelToModel(nodesDbModel))
+        refreshEvents.collect {
+            val nodesDbModel = nodeDao.getNodes(parentId)
+            emit(nodeMapper.mapNodesDbModelToModel(nodesDbModel))
+        }
+    }
+
+    override suspend fun updateNodes() {
+        refreshEvents.emit(Unit)
     }
 }
