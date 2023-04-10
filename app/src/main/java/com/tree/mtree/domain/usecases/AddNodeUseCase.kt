@@ -1,4 +1,4 @@
-package com.example.treestructure.domain.usecases
+package com.tree.mtree.domain.usecases
 
 import com.tree.mtree.domain.model.Node
 import com.tree.mtree.domain.repository.NodeRepository
