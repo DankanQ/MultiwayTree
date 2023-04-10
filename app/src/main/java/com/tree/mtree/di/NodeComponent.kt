@@ -5,14 +5,13 @@ import dagger.BindsInstance
 import dagger.Subcomponent
 
 @Subcomponent(modules = [ViewModelModule::class])
-interface NodeIdComponent {
+interface NodeComponent {
     fun inject(fragment: NodeFragment)
 
     @Subcomponent.Factory
     interface Factory {
         fun create(
-            @BindsInstance
-            @NodeIdQualifier nodeId: Int
-        ): NodeIdComponent
+            @BindsInstance nodeId: Int
+        ): NodeComponent
     }
 }

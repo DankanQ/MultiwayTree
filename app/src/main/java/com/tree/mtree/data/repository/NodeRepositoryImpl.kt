@@ -14,13 +14,13 @@ class NodeRepositoryImpl @Inject constructor(
     private val nodeDao: NodeDao,
     private val nodeMapper: NodeMapper
 ) : NodeRepository {
-    private suspend fun updateNodeName(id: Int) {
-        val node = getNode(id)
+    private suspend fun updateNodeName(nodeId: Int) {
+        val node = getNode(nodeId)
 
         val hash = getHashFromNode(node)
 
         val newNode = node.copy(name = hash)
-        nodeDao.updateNodeName(newNode.id, newNode.name)
+        nodeDao.updateNodeName(newNode.nodeId, newNode.name)
     }
 
     private fun getHashFromNode(node: Node): String {
@@ -37,29 +37,31 @@ class NodeRepositoryImpl @Inject constructor(
         updateNodeName(nodeId)
     }
 
-    override suspend fun deleteNode(parentId: Int, id: Int) {
-        nodeDao.deleteNode(parentId, id)
+    override suspend fun deleteNode(parentId: Int, nodeId: Int) {
+        nodeDao.deleteNode(parentId, nodeId)
     }
 
-    override suspend fun getNode(id: Int): Node {
-        val nodeDbModel = nodeDao.getNode(id)
+    override suspend fun getNode(nodeId: Int): Node {
+        val nodeDbModel = nodeDao.getNode(nodeId)
         return nodeMapper.mapDbModelToModel(
             nodeDbModel
         )
     }
 
-    private val refreshEvents = MutableSharedFlow<Unit>()
+    private val updateEvents = MutableSharedFlow<Unit>()
 
     override fun getNodes(parentId: Int): Flow<List<Node>> = flow {
-        val nodesDbModel = nodeDao.getNodes(parentId)
-        emit(nodeMapper.mapNodesDbModelToModel(nodesDbModel))
-        refreshEvents.collect {
-            val nodesDbModel = nodeDao.getNodes(parentId)
-            emit(nodeMapper.mapNodesDbModelToModel(nodesDbModel))
+        emit(nodeMapper.mapNodesDbModelToModel(
+            nodeDao.getNodes(parentId)).toList()
+        )
+        updateEvents.collect {
+            emit(nodeMapper.mapNodesDbModelToModel(
+                nodeDao.getNodes(parentId)).toList()
+            )
         }
     }
 
     override suspend fun updateNodes() {
-        refreshEvents.emit(Unit)
+        updateEvents.emit(Unit)
     }
 }

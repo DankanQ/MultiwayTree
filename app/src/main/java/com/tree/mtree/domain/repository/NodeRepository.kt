@@ -6,9 +6,9 @@ import kotlinx.coroutines.flow.Flow
 interface NodeRepository {
     suspend fun addNode(node: Node)
 
-    suspend fun deleteNode(parentId: Int, id: Int)
+    suspend fun deleteNode(parentId: Int, nodeId: Int)
 
-    suspend fun getNode(id: Int): Node
+    suspend fun getNode(nodeId: Int): Node
 
     fun getNodes(parentId: Int): Flow<List<Node>>
 

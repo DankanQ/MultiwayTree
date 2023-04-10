@@ -6,5 +6,6 @@ import javax.inject.Inject
 class DeleteNodeUseCase @Inject constructor(
     private val nodeRepository: NodeRepository
 ) {
-    suspend operator fun invoke(parentId: Int, id: Int) = nodeRepository.deleteNode(parentId, id)
+    suspend operator fun invoke(parentId: Int, nodeId: Int) =
+        nodeRepository.deleteNode(parentId, nodeId)
 }

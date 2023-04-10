@@ -6,28 +6,28 @@ import javax.inject.Inject
 
 class NodeMapper @Inject constructor() {
     fun mapModelToDbModel(node: Node) = NodeDbModel(
-        id = node.id,
+        nodeId = node.nodeId,
         name = node.name,
         children = mapNodesModelToDbModel(node.children),
         parentId = node.parentId
     )
 
     fun mapDbModelToModel(nodeDbModel: NodeDbModel) = Node(
-        id = nodeDbModel.id,
+        nodeId = nodeDbModel.nodeId,
         name = nodeDbModel.name,
         children = mapNodesDbModelToModel(nodeDbModel.children),
         parentId = nodeDbModel.parentId
     )
 
-    private fun mapNodesModelToDbModel(nodes: MutableList<Node>): MutableList<NodeDbModel> {
+    private fun mapNodesModelToDbModel(nodes: List<Node>): List<NodeDbModel> {
         return nodes.map {
             mapModelToDbModel(it)
-        }.toMutableList()
+        }
     }
 
-    fun mapNodesDbModelToModel(nodesDbModel: MutableList<NodeDbModel>): MutableList<Node> {
+    fun mapNodesDbModelToModel(nodesDbModel: List<NodeDbModel>): List<Node> {
         return nodesDbModel.map {
             mapDbModelToModel(it)
-        }.toMutableList()
+        }
     }
 }

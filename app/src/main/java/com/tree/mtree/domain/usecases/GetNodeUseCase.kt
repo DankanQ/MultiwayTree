@@ -6,5 +6,5 @@ import javax.inject.Inject
 class GetNodeUseCase @Inject constructor(
     private val nodeRepository: NodeRepository
 ) {
-    suspend operator fun invoke(id: Int) = nodeRepository.getNode(id)
+    suspend operator fun invoke(nodeId: Int) = nodeRepository.getNode(nodeId)
 }
