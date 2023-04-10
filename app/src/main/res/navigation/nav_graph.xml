@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/nodeFragment">
+
+    <fragment
+        android:id="@+id/nodeFragment"
+        android:name="com.tree.mtree.presentation.fragment.NodeFragment"
+        android:label="NodeFragment"
+        tools:layout="@layout/fragment_node">
+        <argument
+            android:name="nodeId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_nodeFragment_self"
+            app:destination="@id/nodeFragment"
+            app:popUpTo="@id/nodeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+</navigation>
