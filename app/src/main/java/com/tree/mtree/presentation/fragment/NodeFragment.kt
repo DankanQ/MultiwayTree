@@ -33,7 +33,8 @@ class NodeFragment : Fragment(R.layout.fragment_node) {
     }
 
     private val component by lazy {
-        (requireActivity().application as MTreeApp).component.nodeIdComponentFactory()
+        (requireActivity().application as MTreeApp).component
+            .nodeComponentFactory()
     }
 
     private lateinit var onFragmentDestroyedListener: OnFragmentDestroyedListener
@@ -113,7 +114,7 @@ class NodeFragment : Fragment(R.layout.fragment_node) {
         binding.rvNodes.adapter = nodeAdapter
 
         nodeAdapter.onNodeClick = {
-            val nodeId = it.id
+            val nodeId = it.nodeId
             findNavController().navigate(
                 NodeFragmentDirections.actionNodeFragmentSelf(nodeId)
             )
@@ -134,7 +135,7 @@ class NodeFragment : Fragment(R.layout.fragment_node) {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val node = nodeAdapter.currentList[viewHolder.adapterPosition]
-                nodeViewModel.deleteNode(node.parentId, node.id)
+                nodeViewModel.deleteNode(node.parentId, node.nodeId)
             }
         }
         val itemTouchHelper = ItemTouchHelper(callback)

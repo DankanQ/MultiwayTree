@@ -2,7 +2,6 @@ package com.tree.mtree.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tree.mtree.di.NodeIdQualifier
 import com.tree.mtree.domain.model.Node
 import com.tree.mtree.domain.usecases.AddNodeUseCase
 import com.tree.mtree.domain.usecases.DeleteNodeUseCase
@@ -24,8 +23,8 @@ class NodeViewModel @Inject constructor(
     private val deleteNodeUseCase: DeleteNodeUseCase,
     private val getNodeUseCase: GetNodeUseCase,
     getNodesUseCase: GetNodesUseCase,
-    private val updateNodesUseCase: UpdateNodesUseCase,
-    @NodeIdQualifier private val nodeId: Int
+    nodeId: Int,
+    private val updateNodesUseCase: UpdateNodesUseCase
 ) : ViewModel() {
     val state: Flow<State> = getNodesUseCase(nodeId)
         .map {
@@ -49,16 +48,16 @@ class NodeViewModel @Inject constructor(
         }
     }
 
-    fun deleteNode(parentId: Int, id: Int) {
+    fun deleteNode(parentId: Int, nodeId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            deleteNodeUseCase(parentId, id)
+            deleteNodeUseCase(parentId, nodeId)
             shouldUpdateNodes()
         }
     }
 
-    suspend fun getNode(id: Int): Node {
-        return withContext(viewModelScope.coroutineContext + Dispatchers.IO) {
-            getNodeUseCase(id)
+    suspend fun getNode(nodeId: Int): Node {
+        return withContext(Dispatchers.IO) {
+            getNodeUseCase(nodeId)
         }
     }
 

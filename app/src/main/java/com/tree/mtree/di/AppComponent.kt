@@ -10,7 +10,7 @@ import dagger.Component
 interface AppComponent {
     fun inject(application: MTreeApp)
 
-    fun nodeIdComponentFactory(): NodeIdComponent.Factory
+    fun nodeComponentFactory(): NodeComponent.Factory
 
     @Component.Factory
     interface AppComponentFactory {

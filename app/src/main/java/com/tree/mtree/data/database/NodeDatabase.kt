@@ -8,7 +8,7 @@ import androidx.room.TypeConverters
 import com.tree.mtree.data.database.converter.TypeConverter
 import com.tree.mtree.data.database.model.NodeDbModel
 
-@Database(entities = [NodeDbModel::class], version = 3, exportSchema = false)
+@Database(entities = [NodeDbModel::class], version = 1, exportSchema = false)
 @TypeConverters(TypeConverter::class)
 abstract class NodeDatabase : RoomDatabase() {
     abstract fun nodeDao(): NodeDao
