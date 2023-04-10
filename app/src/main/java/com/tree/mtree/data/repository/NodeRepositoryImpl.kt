@@ -52,11 +52,11 @@ class NodeRepositoryImpl @Inject constructor(
 
     override fun getNodes(parentId: Int): Flow<List<Node>> = flow {
         emit(nodeMapper.mapNodesDbModelToModel(
-            nodeDao.getNodes(parentId))
+            nodeDao.getNodes(parentId)).toList()
         )
         updateEvents.collect {
             emit(nodeMapper.mapNodesDbModelToModel(
-                nodeDao.getNodes(parentId))
+                nodeDao.getNodes(parentId)).toList()
             )
         }
     }

@@ -156,8 +156,8 @@ class NodeFragment : Fragment(R.layout.fragment_node) {
         binding.fabAdd.setOnClickListener {
             nodeViewModel.addNode(
                 Node(
-                    name = "DEFAULT_NODE_NAME",
-                    children = mutableListOf(),
+                    name = UNDEFINED_NAME,
+                    children = listOf(),
                     parentId = nodeId
                 )
             )
@@ -171,5 +171,6 @@ class NodeFragment : Fragment(R.layout.fragment_node) {
     companion object {
         private const val NODE_ID = "nodeId"
         private const val UNDEFINED_NODE_ID = 0
+        private const val UNDEFINED_NAME = "DEFAULT_NODE_NAME"
     }
 }

@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Node(
     val name: String,
-    val children: MutableList<Node>,
+    val children: List<Node>,
     val parentId: Int,
     var nodeId: Int = UNDEFINED_ID
 ) : Parcelable {

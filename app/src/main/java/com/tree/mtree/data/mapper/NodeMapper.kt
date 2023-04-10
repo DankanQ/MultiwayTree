@@ -19,15 +19,15 @@ class NodeMapper @Inject constructor() {
         parentId = nodeDbModel.parentId
     )
 
-    private fun mapNodesModelToDbModel(nodes: MutableList<Node>): MutableList<NodeDbModel> {
+    private fun mapNodesModelToDbModel(nodes: List<Node>): List<NodeDbModel> {
         return nodes.map {
             mapModelToDbModel(it)
-        }.toMutableList()
+        }
     }
 
-    fun mapNodesDbModelToModel(nodesDbModel: MutableList<NodeDbModel>): MutableList<Node> {
+    fun mapNodesDbModelToModel(nodesDbModel: List<NodeDbModel>): List<Node> {
         return nodesDbModel.map {
             mapDbModelToModel(it)
-        }.toMutableList()
+        }
     }
 }

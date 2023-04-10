@@ -7,14 +7,15 @@ import com.tree.mtree.data.database.model.NodeDbModel
 import javax.inject.Inject
 
 class TypeConverter @Inject constructor() {
+    private val gson = Gson()
+
     @TypeConverter
-    fun fromJson(json: String): MutableList<NodeDbModel> {
-        val type = object : TypeToken<MutableList<NodeDbModel>>() {}.type
-        return Gson().fromJson(json, type)
+    fun fromJson(json: String): List<NodeDbModel> {
+        return gson.fromJson(json, object : TypeToken<List<NodeDbModel>>() {}.type)
     }
 
     @TypeConverter
-    fun toJson(list: MutableList<NodeDbModel>): String {
-        return Gson().toJson(list)
+    fun toJson(list: List<NodeDbModel>): String {
+        return gson.toJson(list)
     }
 }

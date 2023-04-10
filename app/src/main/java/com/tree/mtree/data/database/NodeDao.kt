@@ -21,5 +21,5 @@ interface NodeDao {
     suspend fun getNode(nodeId: Int): NodeDbModel
 
     @Query("SELECT * FROM nodes WHERE parentId=:parentId")
-    suspend fun getNodes(parentId: Int): MutableList<NodeDbModel>
+    suspend fun getNodes(parentId: Int): List<NodeDbModel>
 }

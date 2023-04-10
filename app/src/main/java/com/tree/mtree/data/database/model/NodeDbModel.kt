@@ -8,6 +8,6 @@ data class NodeDbModel(
     @PrimaryKey(autoGenerate = true)
     val nodeId: Int,
     var name: String,
-    val children: MutableList<NodeDbModel>,
+    val children: List<NodeDbModel>,
     val parentId: Int
 )
