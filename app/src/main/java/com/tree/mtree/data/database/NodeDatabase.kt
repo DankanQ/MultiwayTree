@@ -30,8 +30,7 @@ abstract class NodeDatabase : RoomDatabase() {
                     application,
                     NodeDatabase::class.java,
                     DB_NAME
-                ).fallbackToDestructiveMigration()
-                    .build()
+                ).build()
                 INSTANCE = db
                 return db
             }
